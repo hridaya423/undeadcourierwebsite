@@ -51,8 +51,7 @@ export default function VerifyPage() {
           </p>
           <ol className="list-decimal list-inside space-y-2 text-gray-300">
             <li>Open the game on your device</li>
-            <li>Go to Settings or Profile section</li>
-            <li>Click on &quot;Get Verification Code&quot;</li>
+            <li>Get your verification code</li>
             <li>Enter the 6-digit code below</li>
           </ol>
         </div>
