@@ -157,6 +157,9 @@ export default function PlayerPage() {
                 <p className="text-gray-400">
                   Last updated: {new Date(playerStats.updated_at).toLocaleDateString()}
                 </p>
+                <p className="text-gray-400">
+                  Worlds Saved: {playerStats.worlds_saved}
+                </p>
                 <p className="text-xs text-gray-500 mt-1 font-mono">
                   ID: {playerStats.player_id.slice(0, 8)}...{playerStats.player_id.slice(-4)}
                 </p>
