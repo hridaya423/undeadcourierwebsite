@@ -22,7 +22,7 @@ export async function POST(request: Request) {
       
       const { data: existingPlayer, error: queryError } = await supabase
         .from('player_stats')
-        .select('waves_killed, zombies_killed')
+        .select('waves_killed, zombies_killed, worlds_saved')
         .eq('player_id', body.playerId)
         .single();
       
@@ -38,17 +38,19 @@ export async function POST(request: Request) {
       
       const wasUpdated = !existingPlayer || body.score > existingPlayer.waves_killed;
       
-      const { data, error } = await supabase
-        .from('player_stats')
-        .upsert({ 
-          player_id: body.playerId,
-          waves_killed: wasUpdated ? body.score : existingPlayer.waves_killed,
-          zombies_killed: totalZombiesKilled,
-          updated_at: new Date().toISOString()
-        }, {
-          onConflict: 'player_id'
-        });
-  
+      // In your POST function, modify the upsert to include worldsSaved
+          const { data, error } = await supabase
+          .from('player_stats')
+          .upsert({ 
+            player_id: body.playerId,
+            waves_killed: wasUpdated ? body.score : existingPlayer.waves_killed,
+            zombies_killed: totalZombiesKilled,
+            worlds_saved: body.worldsSaved || (existingPlayer?.worlds_saved || 0),
+            updated_at: new Date().toISOString()
+          }, {
+            onConflict: 'player_id'
+          });
+            
       console.log('Supabase response:', { data, error });
       
       if (error) {
