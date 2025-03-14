@@ -1,5 +1,5 @@
 
-/* Loading Screen */
+/* home.css */
 .loading-screen {
   background-color: var(--background);
   display: flex;
@@ -27,7 +27,6 @@
   transform: translate(-50%, -50%);
   width: 60px;
   height: 60px;
-  background-image: url('/zombie-icon.png');
   background-size: contain;
   background-repeat: no-repeat;
 }
@@ -251,15 +250,6 @@
   z-index: -1;
 }
 
-/* Blood splash effect */
-.blood-splash {
-  background-image: url('/blood-splatter.png');
-  background-size: contain;
-  background-repeat: no-repeat;
-  opacity: 0;
-  animation: bloodFade 2s forwards;
-}
-
 @keyframes bloodFade {
   0% { opacity: 0; transform: rotate(0deg) scale(0.5); }
   10% { opacity: 1; transform: rotate(var(--rotation)) scale(1); }
@@ -267,7 +257,6 @@
   100% { opacity: 0; }
 }
 
-/* Atmospheric effects */
 .fog-layer {
   position: absolute;
   top: 0;
@@ -591,5 +580,68 @@
 @media (min-width: 768px) {
   .footer-copyright {
     text-align: right;
+  }
+}
+
+.download-card {
+  min-height: 320px;
+  transition: all 0.3s ease;
+}
+
+.download-card:hover {
+  box-shadow: 0 0 20px rgba(52, 211, 153, 0.3);
+}
+
+.platform-icon {
+  display: inline-block;
+  filter: drop-shadow(0 0 8px rgba(52, 211, 153, 0.6));
+}
+
+.shadow-glow {
+  box-shadow: 0 0 25px rgba(52, 211, 153, 0.4);
+}
+
+/* Glitch text effect for platform names */
+.glitch-text-subtle {
+  position: relative;
+  display: inline-block;
+}
+
+.glitch-text-subtle::after {
+  content: attr(data-text);
+  position: absolute;
+  left: 2px;
+  text-shadow: -1px 0 rgba(255, 0, 0, 0.4);
+  top: 0;
+  color: inherit;
+  overflow: hidden;
+  clip: rect(0, 900px, 0, 0);
+  animation: glitch-subtle 3s infinite linear alternate-reverse;
+}
+
+@keyframes glitch-subtle {
+  0% {
+    clip: rect(0, 900px, 0, 0);
+  }
+  5% {
+    clip: rect(0, 900px, 0, 0);
+  }
+  5.1% {
+    clip: rect(44px, 900px, 66px, 0);
+  }
+  7% {
+    clip: rect(0, 900px, 0, 0);
+  }
+  10% {
+    clip: rect(0, 900px, 0, 0);
+  }
+  10.1% {
+    clip: rect(12px, 900px, 32px, 0);
+  }
+  12% {
+    clip: rect(0, 900px, 0, 0);
+  }
+  100% {
+    clip: rect(0, 900px, 0, 0);
   }
 }
