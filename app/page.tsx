@@ -4,14 +4,9 @@ import Image from "next/image";
 import Head from "next/head";
 import "./home.css"
 import Link from "next/link";
+import { FaLinux, FaWindows } from "react-icons/fa";
+import { SiMacos } from "react-icons/si";
 
-interface BloodSplash {
-  id: number;
-  x: number;
-  y: number;
-  size: number;
-  rotation: number;
-}
 
 interface FeatureCardProps {
   index: number;
@@ -29,7 +24,6 @@ export default function Home() {
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
   const [cursorSize, setCursorSize] = useState(20);
   const [isHoveringButton, setIsHoveringButton] = useState(false);
-  const [bloodSplashes, setBloodSplashes] = useState<BloodSplash[]>([]);
   const zombieRef = useRef<HTMLDivElement>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -76,21 +70,6 @@ export default function Home() {
       setCursorPosition({ x: clientX, y: clientY });
     };
 
-    const handleMouseDown = (e: MouseEvent) => {
-      if (e.button === 0) {
-        setCursorSize(15);
-        createBloodSplash(e.clientX, e.clientY);
-
-        try {
-          const clickSound = new Audio("/sounds/flesh-impact.mp3");
-          clickSound.volume = 0.2;
-          clickSound.play().catch((err) => console.log("Audio play prevented", err));
-        } catch (error) {
-          console.error("Click sound failed:", error);
-        }
-      }
-    };
-
     const handleMouseUp = () => {
       setCursorSize(20);
     };
@@ -103,7 +82,6 @@ export default function Home() {
     };
 
     document.addEventListener("mousemove", handleMouseMove);
-    document.addEventListener("mousedown", handleMouseDown);
     document.addEventListener("mouseup", handleMouseUp);
     document.addEventListener("click", playAudio);
 
@@ -136,29 +114,12 @@ export default function Home() {
       clearInterval(zombieInterval);
 
       document.removeEventListener("mousemove", handleMouseMove);
-      document.removeEventListener("mousedown", handleMouseDown);
       document.removeEventListener("mouseup", handleMouseUp);
       document.removeEventListener("click", playAudio);
 
       if (audioRef.current) audioRef.current.pause();
     };
   }, []);
-
-  const createBloodSplash = (x: number, y: number) => {
-    const splash: BloodSplash = {
-      id: Date.now(),
-      x,
-      y,
-      size: Math.random() * 40 + 20,
-      rotation: Math.random() * 360,
-    };
-    setBloodSplashes((prev) => [...prev, splash]);
-
-    setTimeout(() => {
-      setBloodSplashes((prev) => prev.filter((s) => s.id !== splash.id));
-    }, 2000);
-  };
-
   return (
     <>
       <Head>
@@ -181,19 +142,6 @@ export default function Home() {
           <div className="cursor-trails"></div>
         </div>
 
-        {bloodSplashes.map((splash) => (
-          <div
-            key={splash.id}
-            className="blood-splash absolute pointer-events-none z-50"
-            style={{
-              left: `${splash.x - splash.size / 2}px`,
-              top: `${splash.y - splash.size / 2}px`,
-              width: `${splash.size}px`,
-              height: `${splash.size}px`,
-              transform: `rotate(${splash.rotation}deg)`,
-            }}
-          />
-        ))}
 
         <div className="fixed inset-0 z-0 opacity-40 pointer-events-none">
           <div className="fog-layer fog-1"></div>
@@ -253,6 +201,7 @@ export default function Home() {
                 </p>
 
                 <div className="mt-12 flex flex-col md:flex-row justify-center items-center gap-6">
+<a href="/download">
   <button
     className="play-button relative overflow-hidden"
     onMouseEnter={() => setIsHoveringButton(true)}
@@ -261,7 +210,9 @@ export default function Home() {
     <span className="relative z-10">PLAY NOW</span>
     <span className="button-glow"></span>
   </button>
+  </a>
 
+<a href="/trailer">
   <button
     className="trailer-button relative overflow-hidden"
     onMouseEnter={() => setIsHoveringButton(true)}
@@ -270,6 +221,7 @@ export default function Home() {
     <span className="relative z-10">WATCH TRAILER</span>
     <span className="trailer-button-glow"></span>
   </button>
+  </a>
 </div>
               </div>
               <div className="zombies-container absolute inset-0 overflow-hidden pointer-events-none">
@@ -330,9 +282,9 @@ export default function Home() {
                 <div className="mt-32 text-center animate-on-scroll">
                   <h3 className="text-3xl text-gray-300 mb-12 ">COMING SOON TO</h3>
                   <div className="platforms-container flex flex-wrap justify-center gap-12">
-                    <PlatformIcon platform="PC" />
-                    <PlatformIcon platform="PlayStation" />
-                    <PlatformIcon platform="Xbox" />
+                    <PlatformIcon platform="Windows" />
+                    <PlatformIcon platform="MacOS" />
+                    <PlatformIcon platform="Linux" />
                   </div>
                 </div>
               </div>
@@ -444,10 +396,13 @@ export default function Home() {
           Home
         </Link>
         <a
-          href="/profile" 
+          href="/download" 
           className="text-gray-400 hover:text-toxic-green transition"
         >
-          Profile
+          Downloads
+        </a>
+        <a href="/leaderboard" className="text-gray-400 hover:text-toxic-green transition">
+        Leaderboard
         </a>
       </div>
 
@@ -501,12 +456,12 @@ function PlatformIcon({ platform }: PlatformIconProps) {
     <div className="platform-icon relative hover:scale-110 transition-transform duration-300">
       <div className="platform-icon-inner flex flex-col items-center justify-center">
         <span className="platform-emoji text-4xl mb-1">
-          {platform === "PC"
-            ? "🖥️"
-            : platform === "PlayStation"
-            ? "🎮"
-            : platform === "Xbox"
-            ? "🎯"
+          {platform === "Linux"
+            ? <FaLinux />
+            : platform === "Windows"
+            ? <FaWindows />
+            : platform === "MacOS"
+            ? <SiMacos />
             : "📱"}
         </span>
         <span className="platform-name text-toxic-green ">{platform}</span>
