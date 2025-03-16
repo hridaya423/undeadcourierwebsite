@@ -8,8 +8,8 @@ An asteroid brought the plague. The undead roam free. The only hope left? A top-
 
 ## Features
 
-- **Player Statistics** - Track your survival rate, deliveries completed, and combat efficiency
-- **Global Leaderboard** - Compete with players worldwide for the top courier spot
+- **Player Statistics** - Track your survival rate, worlds saved, and combat efficiency
+- **Global Leaderboard** - Compete with players worldwide for the top fighter spot
 - **Customizable Experience** - Edit your username (and profile pic, to be added soon)
   
 ## 🚀 Getting Started
