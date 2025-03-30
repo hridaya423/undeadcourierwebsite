@@ -22,7 +22,7 @@ export async function POST(request: Request) {
       
       const { data: existingPlayer, error: queryError } = await supabase
         .from('player_stats')
-        .select('waves_killed, zombies_killed, worlds_saved')
+        .select('waves_killed, zombies_killed, worlds_saved, total_playtime_seconds')
         .eq('player_id', body.playerId)
         .single();
       
@@ -35,21 +35,25 @@ export async function POST(request: Request) {
       }
       
       const totalZombiesKilled = (existingPlayer?.zombies_killed || 0) + (body.zombiesKilled || 0);
-      
       const wasUpdated = !existingPlayer || body.score > existingPlayer.waves_killed;
       
-      // In your POST function, modify the upsert to include worldsSaved
-          const { data, error } = await supabase
-          .from('player_stats')
-          .upsert({ 
-            player_id: body.playerId,
-            waves_killed: wasUpdated ? body.score : existingPlayer.waves_killed,
-            zombies_killed: totalZombiesKilled,
-            worlds_saved: body.worldsSaved || (existingPlayer?.worlds_saved || 0),
-            updated_at: new Date().toISOString()
-          }, {
-            onConflict: 'player_id'
-          });
+      // Update or use existing playtime data
+      const existingPlaytime = existingPlayer?.total_playtime_seconds || 0;
+      const totalPlaytime = body.totalPlaytime || existingPlaytime;
+      
+      // Upsert player stats including playtime
+      const { data, error } = await supabase
+        .from('player_stats')
+        .upsert({ 
+          player_id: body.playerId,
+          waves_killed: wasUpdated ? body.score : existingPlayer.waves_killed,
+          zombies_killed: totalZombiesKilled,
+          worlds_saved: body.worldsSaved || (existingPlayer?.worlds_saved || 0),
+          total_playtime_seconds: totalPlaytime,
+          updated_at: new Date().toISOString()
+        }, {
+          onConflict: 'player_id'
+        });
             
       console.log('Supabase response:', { data, error });
       
@@ -61,12 +65,14 @@ export async function POST(request: Request) {
         });
       }
 
+      // Insert match data including match duration
       const { error: matchError } = await supabase
         .from('player_matches')
         .insert({
           player_id: body.playerId,
           waves_survived: body.score,
           zombies_killed: body.zombiesKilled || 0,
+          match_duration_seconds: body.matchDuration || 0,
           played_at: new Date().toISOString()
         });
 
@@ -104,25 +110,31 @@ export async function GET(request: Request) {
     }
 
     try {
+      // Updated query to include playtime data
       const { data: playerData, error: playerError } = await supabase
         .from('player_stats')
-        .select('waves_killed, zombies_killed, updated_at')
+        .select('waves_killed, zombies_killed, worlds_saved, total_playtime_seconds, updated_at')
         .eq('player_id', playerId)
         .single();
 
       if (playerError) throw playerError;
       
+      // Updated query to include match duration
       const { data: recentMatches, error: matchesError } = await supabase
         .from('player_matches')
-        .select('waves_survived, zombies_killed, played_at')
+        .select('waves_survived, zombies_killed, match_duration_seconds, played_at')
         .eq('player_id', playerId)
         .order('played_at', { ascending: false })
         .limit(3);
       
       if (matchesError) throw matchesError;
 
+      // Format playtime for display (optional)
+      const formattedPlaytime = formatPlaytime(playerData.total_playtime_seconds || 0);
+
       const responseData = {
         ...playerData,
+        formatted_playtime: formattedPlaytime,
         recent_matches: recentMatches || []
       };
 
@@ -134,6 +146,27 @@ export async function GET(request: Request) {
         headers
       });
     }
+}
+
+// Helper function to format playtime nicely
+function formatPlaytime(seconds: number): string {
+  if (seconds < 60) {
+    return `${seconds} seconds`;
+  }
+  
+  const minutes = Math.floor(seconds / 60);
+  if (minutes < 60) {
+    return `${minutes} minute${minutes !== 1 ? 's' : ''}`;
+  }
+  
+  const hours = Math.floor(minutes / 60);
+  const remainingMinutes = minutes % 60;
+  
+  if (remainingMinutes === 0) {
+    return `${hours} hour${hours !== 1 ? 's' : ''}`;
+  }
+  
+  return `${hours} hour${hours !== 1 ? 's' : ''} ${remainingMinutes} minute${remainingMinutes !== 1 ? 's' : ''}`;
 }
 
 export async function OPTIONS() {

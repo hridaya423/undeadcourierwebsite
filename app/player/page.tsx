@@ -15,6 +15,7 @@ interface PlayerStats {
   zombies_killed: number;
   worlds_saved: number;
   updated_at: string;
+  total_playtime_seconds?: number;
 }
 
 interface MatchData {
@@ -23,6 +24,7 @@ interface MatchData {
   zombies_killed: number;
   worlds_saved: number;
   played_at: string;
+  match_duration_seconds?: number;
 }
 
 interface LeaderboardEntry {
@@ -166,7 +168,7 @@ export default function PlayerPage() {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-12">
               <StatCard 
                 title="Waves Survived" 
                 value={playerStats.waves_killed}
@@ -181,6 +183,11 @@ export default function PlayerPage() {
                 title="Global Rank"
                 value={`#${leaderboard.findIndex(entry => entry.player_id === playerStats.player_id) + 1}`}
                 icon="🏆"
+              />
+              <StatCard
+                title="Total Playtime"
+                value={playerStats.total_playtime_seconds ? formatPlaytime(playerStats.total_playtime_seconds) : "0 seconds"}
+                icon="⏱️"
               />
             </div>
 
@@ -206,6 +213,11 @@ export default function PlayerPage() {
                           <span className="text-blood-red font-bold">
                             {match.zombies_killed} Zombies
                           </span>
+                          {match.match_duration_seconds && (
+                            <span className="text-yellow-400 font-bold">
+                              {formatPlaytime(match.match_duration_seconds)}
+                            </span>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -269,4 +281,25 @@ function StatCard({ title, value, icon }: { title: string; value: string | numbe
       </div>
     </div>
   );
+}
+
+// Helper function to format playtime nicely
+function formatPlaytime(seconds: number): string {
+  if (seconds < 60) {
+    return `${seconds} seconds`;
+  }
+  
+  const minutes = Math.floor(seconds / 60);
+  if (minutes < 60) {
+    return `${minutes} minute${minutes !== 1 ? 's' : ''}`;
+  }
+  
+  const hours = Math.floor(minutes / 60);
+  const remainingMinutes = minutes % 60;
+  
+  if (remainingMinutes === 0) {
+    return `${hours} hour${hours !== 1 ? 's' : ''}`;
+  }
+  
+  return `${hours} hour${hours !== 1 ? 's' : ''} ${remainingMinutes} minute${remainingMinutes !== 1 ? 's' : ''}`;
 }
