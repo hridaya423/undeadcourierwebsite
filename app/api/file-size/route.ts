@@ -17,10 +17,10 @@ export async function GET(request: NextRequest) {
         version: 'v0.8'
       },
       'mac': {
-        url: 'https://github.com/hridaya423/undeadcourierwebsite/releases/download/mac/macos.zip',
-        size: '262 MB',
-        filename: 'macos.zip',
-        version: 'v0.8'
+        url: 'https://github.com/hridaya423/undeadcourierwebsite/releases/download/v0.9.3/UndeadCourier-0.9.3.dmg',
+        size: '82.7 MB',
+        filename: 'UndeadCourier-0.9.3.dmg',
+        version: 'v0.9.3'
       },
       'linux': {
         url: 'https://github.com/hridaya423/undeadcourierwebsite/releases/download/linux/linux.zip',
