@@ -12,14 +12,14 @@ export async function GET(request: NextRequest) {
     const platformData: Record<string, { url: string, size: string, filename: string, version: string }> = {
       'windows': {
         url: 'https://github.com/hridaya423/undeadcourierwebsite/releases/download/windows/windows.zip',
-        size: '243 MB',
+        size: '257 MB',
         filename: 'windows.zip',
         version: 'v0.8'
       },
       'mac': {
-        url: 'https://github.com/hridaya423/undeadcourierwebsite/releases/download/mac/macos.zip',
-        size: '262 MB',
-        filename: 'macos.zip',
+        url: 'https://github.com/hridaya423/undeadcourierwebsite/releases/download/mac/mac.zip',
+        size: '268 MB',
+        filename: 'mac.zip',
         version: 'v0.8'
       },
       'linux': {
