@@ -11,23 +11,24 @@ export async function GET(request: NextRequest) {
   try {
     const platformData: Record<string, { url: string, size: string, filename: string, version: string }> = {
       'windows': {
-        url: 'https://github.com/hridaya423/undeadcourierwebsite/releases/download/windows/windows.zip',
+        url: 'https://github.com/hridaya423/undeadcourierwebsite/releases/download/v0.8/windows.zip',
         size: '257 MB',
         filename: 'windows.zip',
         version: 'v0.8'
       },
       'mac': {
-        url: 'https://github.com/hridaya423/undeadcourierwebsite/releases/download/mac/mac.zip',
+        url: 'https://github.com/hridaya423/undeadcourierwebsite/releases/download/v0.8/mac.zip',
         size: '268 MB',
         filename: 'mac.zip',
         version: 'v0.8'
       },
       'linux': {
-        url: 'https://github.com/hridaya423/undeadcourierwebsite/releases/download/linux/linux.zip',
+        url: 'https://github.com/hridaya423/undeadcourierwebsite/releases/download/v0.8/linux.zip',
         size: '259 MB',
         filename: 'linux.zip',
         version: 'v0.8'
       }
+
     };
     
     const platformInfo = platformData[platform.toLowerCase()];
