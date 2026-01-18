@@ -143,15 +143,7 @@ export default function Home() {
         </div>
 
 
-        <div className="fixed inset-0 z-0 opacity-40 pointer-events-none">
-          <div className="fog-layer fog-1"></div>
-          <div className="fog-layer fog-2"></div>
-          <div className="fog-layer fog-3"></div>
-        </div>
-
         <div className="blood-vignette fixed inset-0 pointer-events-none z-10 opacity-30"></div>
-
-        <div className="film-grain fixed inset-0 pointer-events-none z-20 opacity-20"></div>
 
         {!isLoaded ? (
           <div className="loading-screen flex flex-col items-center justify-center fixed inset-0 bg-black z-50">
@@ -160,7 +152,7 @@ export default function Home() {
               <div className="loading-zombie"></div>
             </div>
             <p className="text-toxic-green mt-8 animate-pulse loading-text ">
-              Summoning the undead<span className="dot-1">.</span>
+              Loading build<span className="dot-1">.</span>
               <span className="dot-2">.</span>
               <span className="dot-3">.</span>
             </p>
@@ -168,20 +160,16 @@ export default function Home() {
         ) : (
           <main className="relative">
             <section className="hero-section relative min-h-screen flex flex-col items-center justify-center py-16">
-              <div className="parallax-container absolute inset-0 opacity-40 pointer-events-none">
-                <div className="parallax-layer layer-1" data-speed="10"></div>
-                <div className="parallax-layer layer-2" data-speed="20"></div>
-                <div className="parallax-layer layer-3" data-speed="30"></div>
-              </div>
+              <div className="hero-overlay absolute inset-0"></div>
 
               <div className="container mx-auto px-4 text-center relative">
-                <div className="logo-container relative mx-auto mb-6">
+                <div className="logo-container relative mx-auto mb-8">
                   <Image
                     src="/logo.png"
                     alt="Undead Courier"
-                    width={700}
-                    height={250}
-                    className="mx-auto logo-glow new-logo-pulse"
+                    width={640}
+                    height={220}
+                    className="mx-auto logo-glow"
                     priority
                     onError={(e) => { 
                       const target = e.target as HTMLImageElement;
@@ -190,88 +178,104 @@ export default function Home() {
                   />
                 </div>
 
-                <h2 className="tagline text-2xl md:text-3xl text-gray-300 mt-6 max-w-2xl mx-auto glitch-text ">
+                <h2 className="tagline text-2xl md:text-3xl text-gray-100 mt-6 max-w-3xl mx-auto ">
                   <span>
-                    Ex-Army. One Last Mission. Deliver the secret cure before the world truly ends.
+                    You&apos;re the last courier in a city of waves. Hold your ground, drop bosses, rebuild the cure one quarter at a time.
                   </span>
                 </h2>
-                <p className="text-gray-400 mt-4 max-w-xl mx-auto leading-relaxed text-lg px-4 ">
-                  An asteroid brought the plague. The undead roam free. The only hope left? A top-secret
-                  potion to end the infection. Arm up, soldier, you&apos;re humanity&apos;s final courier.
+                <p className="text-gray-300 mt-4 max-w-2xl mx-auto leading-relaxed text-lg px-4 ">
+                  Five waves hit, a boss arrives. Four bosses down = a full serum. Craft it at the tower, reach the scientist, hand it over. No shortcuts—just clear reads, recoil, and resolve.
                 </p>
 
-                <div className="mt-12 flex flex-col md:flex-row justify-center items-center gap-6">
-<a href="/download">
-  <button
-    className="play-button relative overflow-hidden"
-    onMouseEnter={() => setIsHoveringButton(true)}
-    onMouseLeave={() => setIsHoveringButton(false)}
-  >
-    <span className="relative z-10">PLAY NOW</span>
-    <span className="button-glow"></span>
-  </button>
-  </a>
+                <div className="hero-pills flex flex-wrap justify-center gap-3 mt-6">
+                  <span className="pill">Wave-based survival</span>
+                  <span className="pill">Quartered boss drops</span>
+                  <span className="pill">Tower craft &amp; delivery</span>
+                </div>
 
-<a href="/trailer">
-  <button
-    className="trailer-button relative overflow-hidden"
-    onMouseEnter={() => setIsHoveringButton(true)}
-    onMouseLeave={() => setIsHoveringButton(false)}
-  >
-    <span className="relative z-10">WATCH TRAILER</span>
-    <span className="trailer-button-glow"></span>
-  </button>
-  </a>
-</div>
+                <div className="mt-12 flex flex-col md:flex-row justify-center items-center gap-6">
+                  <a href="/download">
+                    <button
+                      className="play-button relative overflow-hidden"
+                      onMouseEnter={() => setIsHoveringButton(true)}
+                      onMouseLeave={() => setIsHoveringButton(false)}
+                    >
+                      <span className="relative z-10">PLAY NOW</span>
+                      <span className="button-glow"></span>
+                    </button>
+                  </a>
+
+                  <a href="/trailer">
+                    <button
+                      className="trailer-button relative overflow-hidden"
+                      onMouseEnter={() => setIsHoveringButton(true)}
+                      onMouseLeave={() => setIsHoveringButton(false)}
+                    >
+                      <span className="relative z-10">WATCH TRAILER</span>
+                      <span className="trailer-button-glow"></span>
+                    </button>
+                  </a>
+                </div>
               </div>
-              <div className="zombies-container absolute inset-0 overflow-hidden pointer-events-none">
-                <div className="zombie zombie1" ref={zombieRef}></div>
-                <div className="zombie zombie2"></div>
-                <div className="zombie zombie3"></div>
-              </div>
+                <div className="zombies-container absolute inset-0 overflow-hidden pointer-events-none">
+                  <div className="zombie zombie1" ref={zombieRef}></div>
+                  <div className="zombie zombie2"></div>
+                  <div className="zombie zombie3"></div>
+                </div>
+
             </section>
 
             <section id="features" className="features-section py-24 relative bg-black">
               <div className="section-divider top"></div>
 
-              <div className="container mx-auto px-4">
-                <h2 className="section-title text-5xl md:text-6xl text-toxic-green text-center mb-20 animate-on-scroll ">
-                  <span className="title-decoration">FEATURES</span>
+                <div className="container mx-auto px-4">
+                <h2 className="section-title text-4xl md:text-5xl text-toxic-green text-center mb-16 animate-on-scroll ">
+                  <span className="title-decoration">FEATURE SNAPSHOT</span>
                 </h2>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                   <FeatureCard
                     index={1}
-                    title="DELIVER THE CURE"
-                    description="Brave undead hordes to deliver a world-saving potion. One bullet at a time, keep the package safe—humanity depends on it."
+                    title="WAVE-DRIVEN PUSH"
+                    description="The city comes in bursts. Clear five waves, pull the boss, and carve out time to craft the cure."
                     icon="/route.jpg"
                   />
                   <FeatureCard
                     index={2}
-                    title="HIGH-POWERED ARSENAL"
-                    description="Mow down zombies with shotguns, assault rifles, and advanced prototype weapons from your Army days. Over 30 ways to blow 'em to bits."
+                    title="PURPOSEFUL ARSENAL"
+                    description="Pistols, grenades, and rifles tuned for tight arenas. Every pickup matters when the swarm closes in."
                     icon="/gun.png"
                   />
                   <FeatureCard
                     index={3}
-                    title="FPS HORROR AT ITS FINEST"
-                    description="Navigate terrifying districts under constant threat. Face cunning undead and mutated monstrosities in a race against time."
+                    title="PRESSURE, NOT CHEAP SHOCK"
+                    description="Slow-burn tension, clean audio tells, and short recovery windows keep the pacing sharp without jump scares."
                     icon="/blood.png"
                   />
                 </div>
 
-                <div className="gameplay-showcase mt-32 animate-on-scroll">
-                  <h3 className="text-3xl text-gray-300 mb-8 text-center ">
-                    GAMEPLAY PREVIEW
-                  </h3>
 
-                  <div className="gameplay-video-container relative mx-auto max-w-5xl aspect-video border-4 border-zombie-green">
-                    <div className="gameplay-placeholder flex items-center justify-center bg-fog-gray h-full">
-                      <span className="text-toxic-green text-2xl animate-pulse ">
-                        VIDEO COMING SOON
-                      </span>
+                <div className="gameplay-showcase mt-32 animate-on-scroll">
+                  <h3 className="text-2xl md:text-3xl text-gray-100 mb-3 text-center uppercase tracking-[0.18em]">
+                    Gameplay Footage
+                  </h3>
+                  <p className="text-gray-400 text-center max-w-2xl mx-auto mb-10 leading-relaxed">
+                    Captured straight from the wave build. Lighting and UI are still being tuned, but this is real play.
+                  </p>
+
+                  <div className="gameplay-video-container relative mx-auto max-w-5xl aspect-video shadow-glow">
+                    <div className="video-frame">
+                      <div className="frame-label">PC capture · wave loop</div>
+                      <div className="video-embed">
+                        <iframe
+                          className="video-iframe"
+                          src="https://www.youtube.com/embed/z7-whXrp3Vg?rel=0&modestbranding=1&controls=1"
+                          title="Undead Courier gameplay"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                          allowFullScreen
+                        ></iframe>
+                      </div>
                     </div>
-                    <div className="video-glitch-effect"></div>
                     <div className="corner-decoration top-left"></div>
                     <div className="corner-decoration top-right"></div>
                     <div className="corner-decoration bottom-left"></div>
@@ -279,14 +283,19 @@ export default function Home() {
                   </div>
                 </div>
 
-                <div className="mt-32 text-center animate-on-scroll">
-                  <h3 className="text-3xl text-gray-300 mb-12 ">COMING SOON TO</h3>
-                  <div className="platforms-container flex flex-wrap justify-center gap-12">
+
+                <div className="mt-28 text-center animate-on-scroll">
+                  <h3 className="text-3xl text-gray-100 mb-3">Platforms in Flight</h3>
+                  <p className="text-gray-400 max-w-xl mx-auto mb-8">
+                    Built for clean input and quick restarts. Desktop first; controller pass ongoing.
+                  </p>
+                  <div className="platforms-container flex flex-wrap justify-center gap-8">
                     <PlatformIcon platform="Windows" />
                     <PlatformIcon platform="MacOS" />
                     <PlatformIcon platform="Linux" />
                   </div>
                 </div>
+
               </div>
 
               <div className="section-divider bottom"></div>
@@ -295,37 +304,34 @@ export default function Home() {
               <div className="container mx-auto px-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
                   <div className="animate-on-scroll">
-                    <h2 className="text-4xl text-toxic-green mb-8 ">APOCALYPTIC WORLD</h2>
-                    <p className="text-xl text-gray-300 mb-6 leading-relaxed ">
-                      A rogue asteroid struck Earth, unleashing a viral plague that turned millions into
-                      ravenous undead. Survivors cling to isolated enclaves, waiting for hope.
+                    <h2 className="text-4xl text-toxic-green mb-6 ">APOCALYPTIC WORLD</h2>
+                    <p className="text-xl text-gray-300 mb-5 leading-relaxed ">
+                      The city collapsed fast. The dead hunt in waves while the living hide in whatever light is left.
                     </p>
                     <p className="text-xl text-gray-300 mb-6 leading-relaxed ">
-                      You&apos;re an ex-Army courier—immune to the virus—tasked with delivering a secret serum
-                      to the last scientist who can reverse the infection. Twelve distinct districts,
-                      each more treacherous than the last, stand between you and the cure.
+                      Every fifth wave brings a boss. Four kills build the cure, the tower crafts it, and you deliver it to the scientist's safe house.
                     </p>
                     <div className="stats-container mt-12 grid grid-cols-3 gap-4">
                       <div className="stat-item">
-                        <div className="text-toxic-green text-4xl ">12</div>
-                        <div className="text-gray-400 text-sm ">DISTRICTS</div>
+                        <div className="text-toxic-green text-4xl ">5</div>
+                        <div className="text-gray-400 text-sm ">WAVES PER BOSS</div>
                       </div>
                       <div className="stat-item">
-                        <div className="text-toxic-green text-4xl ">30+</div>
+                        <div className="text-toxic-green text-4xl ">3</div>
                         <div className="text-gray-400 text-sm ">WEAPONS</div>
                       </div>
                       <div className="stat-item">
-                        <div className="text-toxic-green text-4xl ">8</div>
-                        <div className="text-gray-400 text-sm ">ZOMBIE TYPES</div>
+                        <div className="text-toxic-green text-4xl ">2</div>
+                        <div className="text-gray-400 text-sm ">ENEMY TYPES</div>
                       </div>
                     </div>
                   </div>
 
-                  <div className="world-image-container relative animate-on-scroll">
-                    <div className="world-image aspect-square bg-fog-gray border-2 border-zombie-green relative overflow-hidden">
+                   <div className="world-image-container relative animate-on-scroll">
+                    <div className="world-image aspect-square relative overflow-hidden">
                       <Image
-                        src=""
-                        alt="Apocalyptic city"
+                        src="/zombie-still.png"
+                        alt="Undead night"
                         width={600}
                         height={600}
                         className="world-image-placeholder"
@@ -334,6 +340,7 @@ export default function Home() {
                     </div>
                     <div className="world-image-decoration"></div>
                   </div>
+
                 </div>
               </div>
             </section>
@@ -453,9 +460,9 @@ function FeatureCard({
 
 function PlatformIcon({ platform }: PlatformIconProps) {
   return (
-    <div className="platform-icon relative hover:scale-110 transition-transform duration-300">
-      <div className="platform-icon-inner flex flex-col items-center justify-center">
-        <span className="platform-emoji text-4xl mb-1">
+    <div className="platform-icon">
+      <div className="platform-icon-inner">
+        <span className="platform-emoji">
           {platform === "Linux"
             ? <FaLinux />
             : platform === "Windows"
@@ -464,7 +471,7 @@ function PlatformIcon({ platform }: PlatformIconProps) {
             ? <SiMacos />
             : "📱"}
         </span>
-        <span className="platform-name text-toxic-green ">{platform}</span>
+        <span className="platform-name text-toxic-green">{platform}</span>
       </div>
       <div className="platform-glow"></div>
     </div>
